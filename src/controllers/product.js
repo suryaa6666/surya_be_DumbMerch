@@ -31,7 +31,6 @@ exports.getProducts = async (req, res) => {
         })
 
     } catch (error) {
-        console.log(error);
         res.status(400).send({
             status: "error",
             message: error.toString()

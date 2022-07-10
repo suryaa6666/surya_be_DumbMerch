@@ -4,7 +4,7 @@ const router = express.Router();
 
 const { getUsers, getUser, addUser, updateUser, deleteUser } = require('../controllers/user');
 const { register, login } = require('../controllers/auth');
-const { getCategories, addCategory, updateCategory, deleteCategory } = require('../controllers/category');
+const { getCategories, addCategory, updateCategory, deleteCategory, getCategory } = require('../controllers/category');
 const { getProducts, getProduct, addProduct, updateProduct, deleteProduct } = require('../controllers/product');
 const { getTransactions, getTransaction, addTransaction } = require('../controllers/transaction');
 
@@ -21,6 +21,7 @@ router.post('/register', register);
 
 // category routes
 router.get('/category', getCategories);
+router.get('/category/:id', getCategory);
 router.post('/category', addCategory);
 router.patch('/category/:id', updateCategory);
 router.delete('/category/:id', deleteCategory);
