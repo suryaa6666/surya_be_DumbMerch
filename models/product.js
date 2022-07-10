@@ -17,6 +17,17 @@ module.exports = (sequelize, DataTypes) => {
           name: "idUser"
         }
       })
+
+      product.belongsToMany(models.category, {
+        as: "categories",
+        through: {
+          model: "productcategory",
+          as: "bridge"
+        },
+        foreignKey: {
+          name: "idProduct"
+        }
+      })
     }
   }
   product.init({

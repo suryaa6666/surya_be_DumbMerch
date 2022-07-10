@@ -1,15 +1,25 @@
-const { product, user } = require('../../models');
+const { product, user, category, productcategory } = require('../../models');
 
 exports.getProducts = async (req, res) => {
     try {
         const data = await product.findAll({
-            include: {
-                model: user,
-                as: "user",
-                attributes: {
-                    exclude: ["createdAt", "updatedAt"]
-                }
-            },
+            include: [
+                {
+                    model: user,
+                    as: "user",
+                    attributes: {
+                        exclude: ["createdAt", "updatedAt"]
+                    }
+                },
+                {
+                    model: category,
+                    as: "categories",
+                    through: {
+                        model: productcategory,
+                        as: "bridge",
+                    },
+                },
+            ],
             attributes: {
                 exclude: ["idUser"]
             }
@@ -21,6 +31,7 @@ exports.getProducts = async (req, res) => {
         })
 
     } catch (error) {
+        console.log(error);
         res.status(400).send({
             status: "error",
             message: error.toString()
