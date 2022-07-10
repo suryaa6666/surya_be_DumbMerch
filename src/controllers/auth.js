@@ -86,6 +86,8 @@ exports.login = async (req, res) => {
             }
         })
 
+        const token = jwt.sign({ id: userExist.id }, process.env.TOKEN_KEY);
+
         const isValid = await bcrypt.compare(req.body.password, userExist.password);
 
         if (!userExist) {
@@ -107,7 +109,8 @@ exports.login = async (req, res) => {
             message: "login success!",
             data: {
                 name: userExist.name,
-                email: userExist.email
+                email: userExist.email,
+                token
             }
         })
 
