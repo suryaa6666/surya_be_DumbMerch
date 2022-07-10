@@ -25,10 +25,16 @@ exports.getUser = async (req, res) => {
             where: { id }
         })
 
+        if (!data) return res.status(400).send({
+            status: "failed",
+            message: "data not found"
+        })
+
         res.status(200).send({
             status: "success",
             data
         })
+
     } catch (error) {
         res.status(400).send({
             status: "error",
@@ -42,6 +48,7 @@ exports.addUser = async (req, res) => {
         await user.create(req.body);
 
         res.status(201).send({
+            status: "success",
             message: "new user has been successfully added!"
         })
     } catch (error) {
@@ -56,11 +63,17 @@ exports.updateUser = async (req, res) => {
     try {
         const { id } = req.params;
 
-        await user.update(req.body, {
+        const data = await user.update(req.body, {
             where: { id }
         })
 
+        if (data == 0) return res.status(400).send({
+            status: "failed",
+            message: "data not found"
+        })
+
         res.status(200).send({
+            status: "success",
             message: `update user id : ${id}, success!`,
             data: req.body
         })
@@ -77,11 +90,17 @@ exports.deleteUser = async (req, res) => {
 
         const { id } = req.params;
 
-        await user.destroy({
+        const data = await user.destroy({
             where: { id }
         })
 
+        if (!data) return res.status(400).send({
+            status: "failed",
+            message: "data not found"
+        })
+
         res.status(200).send({
+            status: "success",
             message: `delete user id : ${id}, success!`
         })
     } catch (error) {
