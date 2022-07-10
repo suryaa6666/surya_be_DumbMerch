@@ -1,8 +1,19 @@
-const { user } = require('../../models');
+const { user, profile } = require('../../models');
 
 exports.getUsers = async (req, res) => {
     try {
-        const data = await user.findAll();
+        const data = await user.findAll({
+            include: {
+                model: profile,
+                as: "profile",
+                attributes: {
+                    exclude: ["createdAt", "updatedAt", "idUser"]
+                }
+            },
+            attributes: {
+                exclude: ["createdAt", "updatedAt"]
+            }
+        });
 
         res.status(200).send({
             status: "success",
@@ -45,7 +56,14 @@ exports.getUser = async (req, res) => {
 
 exports.addUser = async (req, res) => {
     try {
-        await user.create(req.body);
+        const dataUser = await user.create(req.body);
+
+        await profile.create({
+            phone: null,
+            gender: null,
+            address: null,
+            idUser: dataUser.id
+        });
 
         res.status(201).send({
             status: "success",
