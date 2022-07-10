@@ -12,6 +12,7 @@ const { getTransactions, getTransaction, addTransaction } = require('../controll
 
 // middlewares
 const { auth } = require("../middlewares/auth");
+const { uploadFile } = require("../middlewares/uploadFile");
 
 // user routes... maybe best for admin
 router.get('/user', getUsers);
@@ -34,8 +35,8 @@ router.delete('/category/:id', auth, deleteCategory);
 // product routes
 router.get('/product', auth, getProducts);
 router.get('/product/:id', auth, getProduct);
-router.post('/product', auth, addProduct);
-router.patch('/product/:id', auth, updateProduct);
+router.post('/product', auth, uploadFile("img"), addProduct);
+router.patch('/product/:id', auth, uploadFile("img"), updateProduct);
 router.delete('/product/:id', auth, deleteProduct);
 
 // transaction routes

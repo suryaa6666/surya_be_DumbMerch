@@ -16,7 +16,6 @@ exports.auth = async (req, res, next) => {
 
         req.user = verified;
 
-        console.log(verified);
         next();
     } catch (error) {
         res.status(400).send({

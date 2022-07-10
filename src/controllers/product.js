@@ -73,11 +73,16 @@ exports.getProduct = async (req, res) => {
 
 exports.addProduct = async (req, res) => {
     try {
-        await product.create(req.body);
+        const newProduct = await product.create({
+            ...req.body,
+            img: req.file.filename,
+            idUser: req.user.id
+        });
 
         res.status(201).send({
             status: "success",
-            message: "new product has been successfully added!"
+            message: "new product has been successfully added!",
+            data: newProduct
         })
     } catch (error) {
         res.status(400).send({
