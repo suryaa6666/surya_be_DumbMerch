@@ -2,6 +2,7 @@ const { user } = require("../../models")
 
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 exports.register = async (req, res) => {
     try {
@@ -43,12 +44,15 @@ exports.register = async (req, res) => {
             status: "customer"
         });
 
+        const token = jwt.sign({ id: newUser.id }, process.env.TOKEN_KEY);
+
         res.status(201).send({
             status: "success",
             message: "new account has been successfully registered!",
             data: {
                 name: newUser.name,
-                email: newUser.email
+                email: newUser.email,
+                token
             }
         })
 
