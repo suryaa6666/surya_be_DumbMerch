@@ -1,8 +1,19 @@
-const { product } = require('../../models');
+const { product, user } = require('../../models');
 
 exports.getProducts = async (req, res) => {
     try {
-        const data = await product.findAll();
+        const data = await product.findAll({
+            include: {
+                model: user,
+                as: "user",
+                attributes: {
+                    exclude: ["createdAt", "updatedAt"]
+                }
+            },
+            attributes: {
+                exclude: ["idUser"]
+            }
+        });
 
         res.status(200).send({
             status: "success",
@@ -22,7 +33,14 @@ exports.getProduct = async (req, res) => {
         const { id } = req.params;
 
         const data = await product.findOne({
-            where: { id }
+            where: { id },
+            include: {
+                model: user,
+                as: "user"
+            },
+            attributes: {
+                exclude: ["idUser"]
+            }
         })
 
         if (!data) return res.status(400).send({
