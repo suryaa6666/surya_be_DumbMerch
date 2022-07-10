@@ -1,6 +1,7 @@
 const { user } = require("../../models")
 
 const Joi = require("joi");
+const bcrypt = require("bcrypt");
 
 exports.register = async (req, res) => {
     try {
@@ -12,6 +13,15 @@ exports.register = async (req, res) => {
 
         const { error } = schema.validate(req.body)
 
+        const emailExist = await user.findOne({
+            where: {
+                email: req.body.email
+            }
+        })
+
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(req.body.password, salt);
+
         if (error) {
             return res.status(400).send({
                 status: "error",
@@ -19,10 +29,17 @@ exports.register = async (req, res) => {
             })
         }
 
+        if (emailExist) {
+            return res.status(400).send({
+                status: "error",
+                message: "email already registered! use another else!"
+            })
+        }
+
         const newUser = await user.create({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password,
+            password: hashedPassword,
             status: "customer"
         });
 
