@@ -13,4 +13,6 @@ app.use(express.json());
 // add end point & router
 app.use("/api/v1", router);
 
+app.use("/uploads", express.static("uploads"))
+
 app.listen(port, () => console.log(`Server Run on port ${port}`));

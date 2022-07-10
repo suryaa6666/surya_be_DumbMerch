@@ -75,7 +75,7 @@ exports.addProduct = async (req, res) => {
     try {
         const newProduct = await product.create({
             ...req.body,
-            img: req.file.filename,
+            img: process.env.PATH_FILE + req.file.filename,
             idUser: req.user.id
         });
 
