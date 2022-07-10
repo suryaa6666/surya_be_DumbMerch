@@ -27,7 +27,7 @@ exports.getUser = async (req, res) => {
 
         if (!data) return res.status(400).send({
             status: "failed",
-            message: "data not found"
+            message: "user not found"
         })
 
         res.status(200).send({
@@ -69,7 +69,7 @@ exports.updateUser = async (req, res) => {
 
         if (data == 0) return res.status(400).send({
             status: "failed",
-            message: "data not found"
+            message: "user not found"
         })
 
         res.status(200).send({
@@ -96,7 +96,7 @@ exports.deleteUser = async (req, res) => {
 
         if (!data) return res.status(400).send({
             status: "failed",
-            message: "data not found"
+            message: "user not found"
         })
 
         res.status(200).send({
