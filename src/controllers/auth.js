@@ -82,6 +82,8 @@ exports.login = async (req, res) => {
             }
         })
 
+        const isValid = await bcrypt.compare(req.body.password, userExist.password);
+
         if (!userExist) {
             return res.status(400).send({
                 status: "error",
@@ -89,7 +91,7 @@ exports.login = async (req, res) => {
             })
         }
 
-        if (userExist.password !== req.body.password) {
+        if (!isValid) {
             return res.status(400).send({
                 status: "error",
                 message: "password is wrong!"
