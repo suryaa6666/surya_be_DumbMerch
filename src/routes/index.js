@@ -10,6 +10,7 @@ const { getCategories, addCategory, updateCategory, deleteCategory, getCategory 
 const { getProducts, getProduct, addProduct, updateProduct, deleteProduct } = require('../controllers/product');
 const { getTransactions, getTransaction, addTransaction } = require('../controllers/transaction');
 const { addProductCategory, updateProductCategory, deleteProductCategory, } = require('../controllers/productcategory');
+const { updateProfile } = require('../controllers/profile');
 
 // middlewares
 const { auth } = require("../middlewares/auth");
@@ -50,5 +51,8 @@ router.post('/transaction', auth, addTransaction);
 router.post('/productcategory', auth, addProductCategory);
 router.patch('/productcategory/:id', auth, updateProductCategory);
 router.delete('/productcategory/:id', auth, deleteProductCategory);
+
+// profile routes
+router.patch('/profile/:idUser', auth, updateProfile);
 
 module.exports = router;
