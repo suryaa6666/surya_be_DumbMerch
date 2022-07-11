@@ -8,21 +8,21 @@ exports.getTransactions = async (req, res) => {
                     model: product,
                     as: "product",
                     attributes: {
-                        exclude: ["createdAt", "updatedAt"]
+                        exclude: ["createdAt", "updatedAt", "idUser"]
                     }
                 },
                 {
                     model: user,
                     as: "buyer",
                     attributes: {
-                        exclude: ["createdAt", "updatedAt"]
+                        exclude: ["createdAt", "updatedAt", "password"]
                     }
                 },
                 {
                     model: user,
                     as: "seller",
                     attributes: {
-                        exclude: ["createdAt", "updatedAt"]
+                        exclude: ["createdAt", "updatedAt", "password"]
                     }
                 },
             ],
@@ -62,14 +62,14 @@ exports.getTransaction = async (req, res) => {
                     model: user,
                     as: "buyer",
                     attributes: {
-                        exclude: ["createdAt", "updatedAt"]
+                        exclude: ["createdAt", "updatedAt", "password"]
                     }
                 },
                 {
                     model: user,
                     as: "seller",
                     attributes: {
-                        exclude: ["createdAt", "updatedAt"]
+                        exclude: ["createdAt", "updatedAt", "password"]
                     }
                 },
             ],
@@ -80,7 +80,7 @@ exports.getTransaction = async (req, res) => {
 
         if (!data) return res.status(400).send({
             status: "failed",
-            message: "product not found"
+            message: "transaction not found"
         })
 
         res.status(200).send({
@@ -98,6 +98,12 @@ exports.getTransaction = async (req, res) => {
 
 exports.addTransaction = async (req, res) => {
     try {
+
+        if (req.body.idSeller == req.body.idBuyer) return res.status(400).send({
+            status: "error",
+            message: "idBuyer cannot be the same as idSeller"
+        })
+
         await transaction.create(req.body);
 
         res.status(201).send({

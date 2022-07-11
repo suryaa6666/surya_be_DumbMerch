@@ -18,7 +18,10 @@ exports.getUsers = async (req, res) => {
                         exclude: ["createdAt", "updatedAt", "idUser"]
                     }
                 }
-            ]
+            ],
+            attributes: {
+                exclude: ["password"]
+            }
         });
 
         res.status(200).send({

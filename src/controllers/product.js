@@ -8,7 +8,7 @@ exports.getProducts = async (req, res) => {
                     model: user,
                     as: "user",
                     attributes: {
-                        exclude: ["createdAt", "updatedAt"]
+                        exclude: ["createdAt", "updatedAt", "password"]
                     }
                 },
                 {
@@ -22,7 +22,7 @@ exports.getProducts = async (req, res) => {
                         }
                     },
                     attributes: {
-                        exclude: ["createdAt", "updatedAt"]
+                        exclude: ["createdAt", "updatedAt", "id"]
                     }
                 },
             ],
@@ -52,7 +52,10 @@ exports.getProduct = async (req, res) => {
             where: { id },
             include: {
                 model: user,
-                as: "user"
+                as: "user",
+                attributes: {
+                    exclude: ["password"]
+                }
             },
             attributes: {
                 exclude: ["idUser"]
@@ -78,13 +81,13 @@ exports.getProduct = async (req, res) => {
 }
 
 exports.addProduct = async (req, res) => {
-    try {
-        const newProduct = await product.create({
-            ...req.body,
-            img: process.env.PATH_FILE + req.file.filename,
-            idUser: req.user.id
-        });
+    const newProduct = await product.create({
+        ...req.body,
+        img: process.env.PATH_FILE + req.file.filename,
+        idUser: req.user.id
+    });
 
+    try {
         res.status(201).send({
             status: "success",
             message: "new product has been successfully added!",
@@ -103,7 +106,10 @@ exports.updateProduct = async (req, res) => {
         const { id } = req.params;
 
         const data = await product.update(req.body, {
-            where: { id }
+            where: {
+                id,
+                idUser: req.user.id
+            }
         })
 
         if (data == 0) return res.status(400).send({
@@ -130,7 +136,10 @@ exports.deleteProduct = async (req, res) => {
         const { id } = req.params;
 
         const data = await product.destroy({
-            where: { id }
+            where: {
+                id,
+                idUser: req.user.id
+            }
         })
 
         if (!data) return res.status(400).send({
