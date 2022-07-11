@@ -9,6 +9,7 @@ const { register, login } = require('../controllers/auth');
 const { getCategories, addCategory, updateCategory, deleteCategory, getCategory } = require('../controllers/category');
 const { getProducts, getProduct, addProduct, updateProduct, deleteProduct } = require('../controllers/product');
 const { getTransactions, getTransaction, addTransaction } = require('../controllers/transaction');
+const { addProductCategory, updateProductCategory, deleteProductCategory, } = require('../controllers/productcategory');
 
 // middlewares
 const { auth } = require("../middlewares/auth");
@@ -43,5 +44,11 @@ router.delete('/product/:id', auth, deleteProduct);
 router.get('/transaction', auth, getTransactions);
 router.get('/transaction/:id', auth, getTransaction);
 router.post('/transaction', auth, addTransaction);
+
+
+// productcategory routes
+router.post('/productcategory', auth, addProductCategory);
+router.patch('/productcategory/:id', auth, updateProductCategory);
+router.delete('/productcategory/:id', auth, deleteProductCategory);
 
 module.exports = router;

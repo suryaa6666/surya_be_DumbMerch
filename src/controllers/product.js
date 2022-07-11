@@ -17,7 +17,13 @@ exports.getProducts = async (req, res) => {
                     through: {
                         model: productcategory,
                         as: "bridge",
+                        attributes: {
+                            include: ["id"]
+                        }
                     },
+                    attributes: {
+                        exclude: ["createdAt", "updatedAt"]
+                    }
                 },
             ],
             attributes: {
@@ -134,7 +140,7 @@ exports.deleteProduct = async (req, res) => {
 
         res.status(200).send({
             status: "success",
-            message: `delete user id : ${id}, success!`
+            message: `delete product id : ${id}, success!`
         })
     } catch (error) {
         res.status(400).send({
