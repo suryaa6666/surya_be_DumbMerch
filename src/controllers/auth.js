@@ -1,4 +1,4 @@
-const { user } = require("../../models")
+const { user, profile } = require("../../models")
 
 const Joi = require("joi");
 const bcrypt = require("bcrypt");
@@ -42,6 +42,13 @@ exports.register = async (req, res) => {
             email: req.body.email,
             password: hashedPassword,
             status: "customer"
+        });
+
+        await profile.create({
+            phone: null,
+            gender: null,
+            address: null,
+            idUser: newUser.id
         });
 
         const token = jwt.sign({ id: newUser.id }, process.env.TOKEN_KEY);
